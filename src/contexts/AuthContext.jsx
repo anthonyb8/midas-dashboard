@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     // Function to log in the user
     const login = async (username, password, navigate) => {
         try {
-            const response = await api.post('api/account/login/', { username, password });
+            const response = await api.post('api/login/', { username, password });
             const token = response.data.token;
             if (token) {
                 setIsAuthenticated(true);
