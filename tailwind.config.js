@@ -25,6 +25,9 @@ module.exports = {
       fontFamily: {
         darkFontFamily: fontFamily.default
       },
+      spacing: {
+        '100': '25rem', // Custom spacing value, adjust as necessary
+      },
     },
   },
   plugins: [],
