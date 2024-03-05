@@ -43,8 +43,8 @@ const Dashboard = () => {
             <div className="py-2.5 px-5 bg-darkSecondaryBg cursor-pointer border border-b-0 rounded-tl-md rounded-tr-md mr-0.5 text-sm">
               <h1 className="text-gray-300 uppercase text-left text-2xl mb-5">{backtestsCache[currentBacktestId].parameters.strategy_name}</h1>
               <ParametersBar parameters={backtestsCache[currentBacktestId].parameters}/>
-              <ChartsCollection timeseries_stats={backtestsCache[currentBacktestId].timeseries_stats} price_data={backtestsCache[currentBacktestId].price_data} signals_data={backtestsCache[currentBacktestId].signals}/> {/* price_data={backtestData.price_data} signals_data={backtestData.signals}/>*/}
-              <TablesCollection overview_data={backtestsCache[currentBacktestId].static_stats} trades_data ={backtestsCache[currentBacktestId].trades} signals_data={backtestsCache[currentBacktestId].signals}/>
+              <ChartsCollection timeseries_stats={backtestsCache[currentBacktestId].timeseriesData} price_data={backtestsCache[currentBacktestId].priceData} signal_data={backtestsCache[currentBacktestId].signalData}/> {/* price_data={backtestData.price_data} signals_data={backtestData.signals}/>*/}
+              <TablesCollection overview_data={backtestsCache[currentBacktestId].static_stats} trades_data ={backtestsCache[currentBacktestId].trades} signals_data={backtestsCache[currentBacktestId].signalData}/>
             </div>
           </>
         ) : (

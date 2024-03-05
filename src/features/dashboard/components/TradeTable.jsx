@@ -11,30 +11,30 @@ function TradeTable({ trades_data }) {
 
   return (
     <>
-      <table className="w-full border-collapse border-spacing-0">
+      <table className="w-full border-collapse border-spacing-0 text-left">
         <thead>
           <tr>
-            <th className="py-2 px-3 border-b border-gray-700">Timestamp</th>
-            <th className="py-2 px-3 border-b border-gray-700">Trade ID</th>
-            <th className="py-2 px-3 border-b border-gray-700">Leg ID</th>
-            <th className="py-2 px-3 border-b border-gray-700">Symbol</th>
-            <th className="py-2 px-3 border-b border-gray-700">Quantity</th>
-            <th className="py-2 px-3 border-b border-gray-700">Price</th>
-            <th className="py-2 px-3 border-b border-gray-700">Cost</th>
-            <th className="py-2 px-3 border-b border-gray-700"> Direction</th>
+            <th className="py-2 px-3 border-b ">Timestamp</th>
+            <th className="py-2 px-3 border-b ">Trade ID</th>
+            <th className="py-2 px-3 border-b ">Leg ID</th>
+            <th className="py-2 px-3 border-b ">Ticker</th>
+            <th className="py-2 px-3 border-b ">Quantity</th>
+            <th className="py-2 px-3 border-b ">Price</th>
+            <th className="py-2 px-3 border-b ">Cost</th>
+            <th className="py-2 px-3 border-b ">Action</th>
           </tr>
         </thead>
         <tbody>
           {currentItems.map((trade, index) => (
              <tr key={index}>
-             <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{trade.timestamp}</td>
-             <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{trade.trade_id}</td>
-             <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{trade.leg_id}</td>
-             <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{trade.symbol}</td>
-             <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{trade.quantity}</td>
-             <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{trade.price}</td>
-             <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{trade.cost}</td>
-             <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{trade.direction}</td>
+             <td className={`py-2 px-3 border-b`}>{trade.timestamp}</td>
+             <td className={`py-2 px-3 border-b`}>{trade.trade_id}</td>
+             <td className={`py-2 px-3 border-b`}>{trade.leg_id}</td>
+             <td className={`py-2 px-3 border-b`}>{trade.ticker}</td>
+             <td className={`py-2 px-3 border-b`}>{trade.quantity}</td>
+             <td className={`py-2 px-3 border-b`}>{trade.price}</td>
+             <td className={`py-2 px-3 border-b`}>{trade.cost}</td>
+             <td className={`py-2 px-3 border-b`}>{trade.action}</td>
            </tr>
 
           ))}
@@ -49,21 +49,3 @@ function TradeTable({ trades_data }) {
 }
 
 export default TradeTable;
-
-
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const itemsPerPage = 20;
-
-  // const indexOfLastItem = currentPage * itemsPerPage;
-  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // const currentItems = trades_data.slice(indexOfFirstItem, indexOfLastItem);
-
-  // const totalPages = Math.ceil(trades_data.length / itemsPerPage);
-
-  // const goToNextPage = () => {
-  //   setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
-  // };
-
-  // const goToPreviousPage = () => {
-  //   setCurrentPage(currentPage => Math.max(currentPage - 1, 1));
-  // };

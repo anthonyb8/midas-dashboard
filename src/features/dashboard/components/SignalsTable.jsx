@@ -11,17 +11,14 @@ function SignalsTable({ signals_data }) {
 
   return (
     <>
-      <table className="w-full border-collapse border-spacing-0">
-        {/* Note: Custom CSS may be needed for border-collapse and border-spacing */}
+      <table className="w-full border-collapse border-spacing-0 text-left">
         <thead>
           <tr>
-            <th className="py-2 px-3 border-b border-gray-700">Timestamp</th>
-            {/* <th className="py-2 px-3 border-b border-gray-700">Trade ID</th> */}
-            <th className="py-2 px-3 border-b border-gray-700">Leg ID</th>
-            <th className="py-2 px-3 border-b border-gray-700">Symbol</th>
-            {/* <th className="py-2 px-3 border-b border-gray-700">Price</th> */}
-            <th className="py-2 px-3 border-b border-gray-700">Direction</th>
-            <th className="py-2 px-3 border-b border-gray-700">Trade Allocation</th>
+            <th className="py-2 px-3 border-b ">Timestamp</th>
+            <th className="py-2 px-3 border-b border-l ">Leg ID</th>
+            <th className="py-2 px-3 border-b ">Symbol</th>
+            <th className="py-2 px-3 border-b ">Direction</th>
+            <th className="py-2 px-3 border-b ">Trade Allocation</th>
           </tr>
         </thead>
         <tbody>
@@ -30,14 +27,14 @@ function SignalsTable({ signals_data }) {
             {trade.trade_instructions.map((instruction, idx) => (
               <tr key={idx}>
                 {idx === 0 && (
-                  <td rowSpan={trade.trade_instructions.length} className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>
-                    {trade.timestamp}
+                  <td rowSpan={trade.trade_instructions.length} className={`py-2 px-3 border-b`}>
+                    {trade.iso_timestamp}
                   </td>
                 )}
-                <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{instruction.leg_id}</td>
-                <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{instruction.ticker}</td>
-                <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{instruction.direction}</td>
-                <td className={`py-2 px-3 ${index === currentItems.length - 1 ? 'border-b-0' : 'border-b border-gray-700'}`}>{instruction.allocation_percent}</td>
+                <td className={`py-2 px-3 border-b border-l `}>{instruction.leg_id}</td>
+                <td className={`py-2 px-3 border-b`}>{instruction.ticker}</td>
+                <td className={`py-2 px-3 border-b`}>{instruction.action}</td>
+                <td className={`py-2 px-3 border-b`}>{instruction.weight}</td>
               </tr>
             ))}
           </React.Fragment>

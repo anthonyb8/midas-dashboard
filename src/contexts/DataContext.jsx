@@ -14,8 +14,6 @@ export function BacktestProvider ({ children }) {
   const [groupedSummaries, setGroupedSummaries] = useState({});
   const [currentBacktestId, setCurrentBacktestId] = useState(null);
 
-  // const authToken = sessionStorage.getItem('token');
-
   // This is mainly for debugging, consider removing in production
   useEffect(() => {
     log.debug('Backtests Cache Updated:', backtestsCache);
@@ -95,11 +93,14 @@ export function BacktestProvider ({ children }) {
       try {
         const data = await client.getBacktestById(backtest_id)
         if (data) {
-          const updatedCache = { ...backtestsCache, [backtest_id]: data };
+          console.log(data)
+          const processedData = processBacktest(data);
+          console.log(processedData)
+          const updatedCache = { ...backtestsCache, [backtest_id]: processedData};
           setBacktestsCache(updatedCache);
           // sessionStorage.setItem('cachedBacktests', JSON.stringify(updatedCache));
           log.info(`Fetched and cached data for backtest ID: ${backtest_id}`);
-          return data;
+          return processedData;
         } 
       } catch (error) {
         log.error('Error fetching backtest:', error);
@@ -108,6 +109,62 @@ export function BacktestProvider ({ children }) {
     }
   };
 
+  /**
+   * Processes the raw backtest data, filtering and mapping timeseries stats, price data,
+   * and signals to their respective processed formats. Unprocessed parts of the backtest
+   * data are preserved and included in the returned object.
+   * 
+   * @param {Object} backtestData - The raw backtest data including timeseries_stats,
+   * price_data, and signals, along with any additional data.
+   * @returns {Object} The processed backtest data, including processed timeseriesData,
+   * priceData, and signalData, along with all other unmodified backtest data.
+   */
+  const processBacktest = (backtestData) => {
+    console.log(backtestData);
+    // Destructure the parts of backtestData that require processing
+    const { timeseries_stats, price_data, signals, ...restOfBacktestData } = backtestData;
+    
+    // Process timeseries_stats
+    const preprocessedData = timeseries_stats.filter((item, index, self) =>
+      index === self.findIndex((findItem) => findItem.timestamp === item.timestamp)
+    );
+    const timeseriesData = preprocessedData.map(item => ({
+      timestamp: Math.floor(new Date(item.timestamp).getTime() / 1000),
+      equity_value: parseFloat(item.equity_value),
+      daily_return: parseFloat(item.daily_return),
+      cumulative_return: parseFloat(item.cumulative_return),
+      percent_drawdown: parseFloat(item.percent_drawdown),
+    }));
+    
+    // Process price_data
+    const priceData = price_data.map(item => ({
+      symbol: item.symbol,
+      time: Math.floor(new Date(item.timestamp).getTime() / 1000),
+      open: parseFloat(item.open),
+      high: parseFloat(item.high),
+      low: parseFloat(item.low),
+      close: parseFloat(item.close),
+      volume: parseInt(item.volume),
+    }));
+
+    // Process signals_data
+    const signalData = signals.map(item => ({
+      iso_timestamp: item.timestamp,
+      time: Math.floor(new Date(item.timestamp).getTime() / 1000),
+      trade_instructions: item.trade_instructions,
+    }));
+
+    // Process static data
+    // const staticData = 
+  
+    return {
+      ...restOfBacktestData, // Spread the unprocessed parts of backtestData
+      timeseriesData,
+      priceData,
+      signalData,
+    };
+  };
+  
   /**
    * Removes a backtest from the cache.
    * 

@@ -1,71 +1,61 @@
 import React, { useEffect, useRef } from 'react';
 import { createChart } from 'lightweight-charts';
+import log from 'loglevel';
 
 /**
- * Renders a line chart using lightweight-charts library.
- *
- * @param {Object} props - Component props.
- * @param {Array} props.data - Array of data points for the chart. Each point should have a 'time' and a 'value' property.
- * @param {string} props.title - Title of the chart.
+ * Initializes and returns a Lightweight Chart instance.
+ * 
+ * @param {React.MutableRefObject} chartRef - A React ref object that will hold the chart instance.
+ * @param {HTMLElement} container - The DOM element container for the chart.
+ * @returns {IChartApi} The chart instance created by the Lightweight Charts library.
+ */
+const initializeChart = (chartRef, container) => {
+    if (!chartRef.current) {
+        const chart = createChart(container, {
+            width: 789,
+            height: 400,
+            layout: {
+            background: { type: 'solid', color: '#1e1e1e' },
+            textColor: '#ddd',
+            },
+            grid: {
+                horzLines: { color: '#444' },
+                vertLines: { color: '#444' },
+            },
+            priceScale: {
+                borderColor: '#444',
+            },
+            timeScale: {
+                borderColor: '#444',
+            },
+        });
+        chartRef.current = chart;
+    }
+    return chartRef.current;
+};
+
+/**
+ * Renders a line chart using the lightweight-charts library.
+ * 
+ * @param {{ data: Array<{ time: string | number, value: number }>, title: string }} props The component props.
  */
 function LineChart({ data , title}) {
-    const chartContainerRef = useRef();
-    const chartRef = useRef(null); // To store the chart instance
+    const chartContainerRef = useRef(null);
+    const chartRef = useRef(null);
 
     useEffect(() => {
-        if (chartContainerRef.current) {
-            let chart;
-            if (!chartRef.current) {
-                // Create a new chart if it doesn't exist
-                chart = createChart(chartContainerRef.current, {
-                    width: 789,
-                    height: 400,
-                    layout: {
-                        background: { type: 'solid', color: '#1e1e1e' },
-                        textColor: '#ddd',
-                    },
-                    grid: {
-                        horzLines: { color: '#444' },
-                        vertLines: { color: '#444' },
-                    },
-                    priceScale: {
-                        borderColor: '#444',
-                    },
-                    timeScale: {
-                        borderColor: '#444',
-                    },
-                });
-                chartRef.current = chart;
-            } else {
-                // Use the existing chart
-                chart = chartRef.current;
-            }
-            let chartSeries;
-            if (!chartSeries) {
-                chartSeries = chart.addLineSeries({
-                    color: 'white',
-                    lineWidth: 2,
-                    priceLineVisible: false,
-                    lastValueVisible: false,
-                });
-            }
-            // Transform the data and set it to the chart
-            const seriesData = data.map(series => {
-                const date = new Date(series.time);
-                return {
-                    time: date.toISOString().split('T')[0], // Format time as YYYY-MM-DD
-                    value: parseFloat(series.value),
-                };
-            });
-            chartSeries.setData(seriesData); // Set all data points at once
-        }
-        // Cleanup function
-        return () => {
-            if (chartRef.current) {
-                chartRef.current.remove();
-                chartRef.current = null;
-            }
-        };
+        // Initialize the chart
+        const chart = initializeChart(chartRef, chartContainerRef.current);
+
+        // Configure and set data for the series
+        const chartSeries = chart.addLineSeries({
+            color: 'white',
+            lineWidth: 2,
+            priceLineVisible: false,
+            lastValueVisible: false,
+        });
+
+        chartSeries.setData(data); 
     }, [data]);
 
     if (!data) {
@@ -81,4 +71,3 @@ function LineChart({ data , title}) {
 }
 
 export default LineChart;
-

@@ -10,7 +10,7 @@ import { AuthProvider } from './contexts/AuthContext';
 
 // Set logging for whole app
 if(process.env.NODE_ENV==='production'){
-  log.setLevel('warn')
+  log.setLevel('info')
 }else{
   log.setLevel('debug')
 }
